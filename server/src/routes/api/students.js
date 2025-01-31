@@ -1,14 +1,14 @@
-const express = require('express');
-const router = express.Router();
-const authorization = require('../../middlewares/authorization');
+import { Router } from 'express';
+const router = Router();
+import authorization from '../../middlewares/authorization.js';
 
-const Student = require('../../models/Student');
+import Student from '../../models/Student.js';
 
-const { ADMIN, STUDENT } = require('../../constants/roles');
+import { ADMIN, STUDENT } from '../../constants/roles.js';
 
 router.get('/', authorization, (req, res) => {
   if (req.user.role === STUDENT)
-    return res.status(401).send({ message: 'Access denied.' });
+    return res.status(403).send({ message: 'Access denied.' });
 
   Student.find({})
     .then(students => res.status(200).send(students))
@@ -33,4 +33,4 @@ router.delete('/:id', authorization, (req, res) => {
     .catch(error => res.status(400).send({ message: error.message }));
 });
 
-module.exports = router;
+export default router;

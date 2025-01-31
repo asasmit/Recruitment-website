@@ -13,6 +13,7 @@ const JOBS = '/home/jobs';
 const JOBS_NEW = '/home/jobs/new';
 const PROFILE = '/home/profile';
 const PROFILE_EDIT = '/home/profile/edit';
+const VIDEO_CALL = '/home/connect';
 
 export {
   LANDING,
@@ -30,4 +31,5 @@ export {
   JOBS_NEW,
   PROFILE,
   PROFILE_EDIT,
+  VIDEO_CALL,
 };

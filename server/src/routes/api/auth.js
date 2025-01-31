@@ -1,14 +1,17 @@
-const express = require('express');
-const router = express.Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+import { Router } from 'express';
+const router = Router();
+import pkg from 'bcryptjs';
+const { genSaltSync, hashSync, compareSync } = pkg;
+import pkg2 from 'jsonwebtoken';
+const { sign } = pkg2;
 
-const Admin = require('../../models/Admin');
-const Company = require('../../models/Company');
-const Student = require('../../models/Student');
+import Admin from '../../models/Admin.js';
+import Company from '../../models/Company.js';
+import Student from '../../models/Student.js';
 
-const { ADMIN, COMPANY, STUDENT } = require('../../constants/roles');
-const { validateSignUp, validateLogIn } = require('../../validation');
+import { ADMIN, COMPANY, STUDENT } from '../../constants/roles.js';
+import validateSignUp from '../../validation/validateSignUp.js';
+import validateLogIn from '../../validation/validateLogIn.js';
 
 router.post('/signup/:role', async (req, res) => {
   const { role } = req.params;
@@ -26,8 +29,8 @@ router.post('/signup/:role', async (req, res) => {
       message: 'The email address is already in use by another account.',
     });
 
-  const salt = bcrypt.genSaltSync(10);
-  const hash = bcrypt.hashSync(password, salt);
+  const salt = genSaltSync(10);
+  const hash = hashSync(password, salt);
 
   if (role === COMPANY) {
     const company = new Company({
@@ -37,7 +40,7 @@ router.post('/signup/:role', async (req, res) => {
       password: hash,
     });
 
-    const token = jwt.sign({ _id: company._id, role }, 'asmittt');
+    const token = sign({ _id: company._id, role }, 'asmittt');
 
     company
       .save()
@@ -56,7 +59,7 @@ router.post('/signup/:role', async (req, res) => {
       password: hash,
     });
 
-    const token = jwt.sign({ _id: student._id, role }, 'asmittt');
+    const token = sign({ _id: student._id, role }, 'asmittt');
 
     student
       .save()
@@ -85,11 +88,11 @@ router.post('/login/:role', async (req, res) => {
         message: 'There is no user record corresponding to this identifier.',
       });
 
-    const checkPassword = bcrypt.compareSync(password, user.password);
+    const checkPassword = compareSync(password, user.password);
     if (!checkPassword)
       return res.status(400).send({ message: 'The password is invalid.' });
 
-    const token = jwt.sign({ _id: user._id, role }, 'asmittt');
+    const token = sign({ _id: user._id, role }, 'asmittt');
 
     const userData = user.toObject();
     delete userData.password;
@@ -103,11 +106,11 @@ router.post('/login/:role', async (req, res) => {
         message: 'There is no user record corresponding to this identifier.',
       });
 
-    const checkPassword = bcrypt.compareSync(password, user.password);
+    const checkPassword = compareSync(password, user.password);
     if (!checkPassword)
       return res.status(400).send({ message: 'The password is invalid.' });
 
-    const token = jwt.sign({ _id: user._id, role }, 'asmittt');
+    const token = sign({ _id: user._id, role }, 'asmittt');
 
     const userData = user.toObject();
     delete userData.password;
@@ -121,11 +124,11 @@ router.post('/login/:role', async (req, res) => {
         message: 'There is no user record corresponding to this identifier.',
       });
 
-    const checkPassword = bcrypt.compareSync(password, user.password);
+    const checkPassword = compareSync(password, user.password);
     if (!checkPassword)
       return res.status(400).send({ message: 'The password is invalid.' });
 
-    const token = jwt.sign({ _id: user._id, role }, 'asmittt');
+    const token = sign({ _id: user._id, role }, 'asmittt');
 
     const userData = user.toObject();
     delete userData.password;
@@ -134,4 +137,4 @@ router.post('/login/:role', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

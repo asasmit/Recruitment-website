@@ -1,15 +1,17 @@
-const express = require('express');
-const router = express.Router();
-const authorization = require('../../middlewares/authorization');
+import { Router } from 'express';
+const router = Router();
+import authorization from '../../middlewares/authorization.js';
 
-const Admin = require('../../models/Admin');
-const Company = require('../../models/Company');
-const Student = require('../../models/Student');
+import Admin from '../../models/Admin.js';
+import Company from '../../models/Company.js';
+import Student from '../../models/Student.js';
 
-const { ADMIN, COMPANY, STUDENT } = require('../../constants/roles');
+import { ADMIN, COMPANY, STUDENT } from '../../constants/roles.js';
+
+import validateUpdateRequest from '../../validation/validateProfile.js';
 
 router.get('/', authorization, (req, res) => {
-  const { _id, role } = req.user;
+  const { _id,role } = req.user;
 
   if (role === ADMIN)
     return Admin.findById(_id)
@@ -64,23 +66,35 @@ router.patch('/', authorization, (req, res) => {
     phone,
   } = req.body;
 
-  if (role === ADMIN)
-    return Admin.updateOne({ _id }, { $set: { firstName, lastName } })
-      .then(success => res.status(200).send(success.nModified))
-      .catch(error => res.status(400).send({ message: error.message }));
+  try {
+    validateUpdateRequest(role, req.body);
 
-  if (role === COMPANY)
-    return Company.updateOne(
-      { _id },
-      { $set: { firstName, lastName, companyName, companyEmail, companyPhone } }
-    )
+    // Perform the database update based on role
+    if (role === ADMIN) {
+      return Admin.updateOne({ _id }, { $set: { firstName, lastName } })
       .then(success => res.status(200).send(success.nModified))
       .catch(error => res.status(400).send({ message: error.message }));
+    }
 
-  if (role === STUDENT)
-    return Student.updateOne({ _id }, { $set: { firstName, lastName, phone } })
-      .then(success => res.status(200).send(success.nModified))
-      .catch(error => res.status(400).send({ message: error.message }));
+    if (role === COMPANY) {
+      return Company.updateOne(
+        { _id },
+        { $set: { firstName, lastName, companyName, companyEmail, companyPhone } }
+      )
+        .then(success => res.status(200).send(success.nModified))
+        .catch(error => res.status(400).send({ message: error.message }));
+    }
+
+    if (role === STUDENT) {
+      return Student.updateOne({ _id }, { $set: { firstName, lastName, phone } })
+        .then(success => res.status(200).send(success.nModified))
+        .catch(error => res.status(400).send({ message: error.message }));
+    }
+  } catch (error) {
+    // Handle validation error
+    console.log("gg");
+    return res.status(400).send({ message: error.message });
+  }
 });
 
-module.exports = router;
+export default router;

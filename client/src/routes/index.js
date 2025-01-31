@@ -1,10 +1,8 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
-
 import PublicRoute from './PublicRoute';
 import PrivateRoute from './PrivateRoute';
-
 import Landing from '../components/Landing/Lazy';
 import SignUpType from '../components/SignUpType/Lazy';
 import SignUpContainer from '../containers/SignUpContainer/Lazy';
@@ -12,6 +10,8 @@ import LogInType from '../components/LogInType/Lazy';
 import LogInContainer from '../containers/LogInContainer/Lazy';
 import HomeContainer from '../containers/HomeContainer/Lazy';
 import NotFound from '../components/NotFound/Lazy';
+import VideoCall from '../components/VideoCall';
+
 
 const AppRoutes = () => {
   return (
@@ -52,6 +52,11 @@ const AppRoutes = () => {
         path={`${ROUTES.HOME}/*`}
         element={<PrivateRoute component={HomeContainer} />}
       />
+      <Route
+        path={`${ROUTES.VIDEO_CALL}/*`}
+        element={<PrivateRoute component={VideoCall} />}
+      />
+
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

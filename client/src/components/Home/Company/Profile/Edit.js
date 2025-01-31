@@ -31,7 +31,7 @@ const Edit = ({
         <Card.Body>
           <Alert
             variant="danger"
-            show={error}
+            show={!!error}  
             dismissible
             onClose={dismissAlert}
           >

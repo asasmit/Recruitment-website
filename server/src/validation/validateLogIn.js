@@ -1,4 +1,4 @@
-const Joi = require('joi');
+import Joi from 'joi';
 
 const validateLogIn = data => {
   const schema = Joi.object({
@@ -11,4 +11,4 @@ const validateLogIn = data => {
   return schema.validate(data);
 };
 
-module.exports = validateLogIn;
+export default validateLogIn;

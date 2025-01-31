@@ -1,14 +1,14 @@
-const express = require('express');
-const router = express.Router();
-const authorization = require('../../middlewares/authorization');
+import { Router } from 'express';
+const router = Router();
+import authorization from '../../middlewares/authorization.js';
 
-const Company = require('../../models/Company');
+import Company from '../../models/Company.js';
 
-const { ADMIN, COMPANY } = require('../../constants/roles');
+import { ADMIN, COMPANY } from '../../constants/roles.js';
 
 router.get('/', authorization, (req, res) => {
   if (req.user.role === COMPANY)
-    return res.status(401).send({ message: 'Access denied.' });
+    return res.status(403).send({ message: 'Access denied.' });
 
   Company.find({})
     .then(companies => res.status(200).send(companies))
@@ -33,4 +33,4 @@ router.delete('/:id', authorization, (req, res) => {
     .catch(error => res.status(400).send({ message: error.message }));
 });
 
-module.exports = router;
+export default router;

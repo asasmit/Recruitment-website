@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const { ADMIN } = require('../constants/roles');
+import { ADMIN } from '../constants/roles.js';
 
-const AdminSchema = mongoose.Schema({
+const AdminSchema = Schema({
   firstName: {
     type: String,
     required: true,
@@ -13,6 +13,7 @@ const AdminSchema = mongoose.Schema({
   },
   email: {
     type: String,
+    unique: true,
     required: true,
   },
   password: {
@@ -22,11 +23,7 @@ const AdminSchema = mongoose.Schema({
   role: {
     type: String,
     default: ADMIN,
-  },
-  createdAt: {
-    type: Date,
-    default: Date,
-  },
+  }
 });
 
-module.exports = mongoose.model('Admins', AdminSchema);
+export default model('Admins', AdminSchema);

@@ -1,10 +1,10 @@
-const express = require('express');
-const router = express.Router();
-const authorization = require('../../middlewares/authorization');
+import { Router } from 'express';
+const router = Router();
+import authorization from '../../middlewares/authorization.js';
 
-const Job = require('../../models/Job');
+import Job from '../../models/Job.js';
 
-const { COMPANY, STUDENT } = require('../../constants/roles');
+import { COMPANY, STUDENT } from '../../constants/roles.js';
 
 router.get('/', authorization, (req, res) => {
   const { _id, role } = req.user;
@@ -54,18 +54,20 @@ router.get('/:id', authorization, (req, res) => {
 router.patch('/:id/apply', authorization, (req, res) => {
   const { _id, role } = req.user;
 
-  if (role !== STUDENT)
+  if (role !== STUDENT) {
     return res.status(401).send({ message: 'Access denied.' });
+  }
 
-  Job.findById(req.params.id)
-    .then(job => {
-      const plainJob = job.toObject();
-      const applicants = plainJob.applicants;
-      applicants.push(_id);
-
-      return Job.updateOne({ _id: req.params.id }, { $set: { applicants } });
+  Job.updateOne(
+    { _id: req.params.id },
+    { $addToSet: { applicants: _id } }
+  )
+    .then(success => {
+      if (success.nModified === 0) {
+        return res.status(400).send({ message: 'You already applied for this job.' });
+      }
+      res.status(200).send({ message: 'Application submitted successfully.' });
     })
-    .then(success => res.status(200).send(success.nModifieds))
     .catch(error => res.status(400).send({ message: error.message }));
 });
 
@@ -80,9 +82,9 @@ router.delete('/:id', authorization, (req, res) => {
       .then(success => res.status(200).send(success.deletedCount.toString()))
       .catch(error => res.status(400).send({ message: error.message }));
 
-  Job.deleteOne({ _id: req.params.id })
+  Job.eleteOne({ _id: req.params.id })
     .then(success => res.status(200).send(success.deletedCount.toString()))
     .catch(error => res.status(400).send({ message: error.message }));
 });
 
-module.exports = router;
+export default router;

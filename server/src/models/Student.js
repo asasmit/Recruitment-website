@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const { STUDENT } = require('../constants/roles');
+import { STUDENT } from '../constants/roles.js';
 
-const StudentSchema = mongoose.Schema({
+const StudentSchema = Schema({
   firstName: {
     type: String,
     required: true,
@@ -27,10 +27,9 @@ const StudentSchema = mongoose.Schema({
     type: String,
     default: STUDENT,
   },
-  createdAt: {
-    type: Date,
-    default: Date,
-  },
+  resume: {
+    type: String,
+  }
 });
 
-module.exports = mongoose.model('Students', StudentSchema);
+export default model('Students', StudentSchema);

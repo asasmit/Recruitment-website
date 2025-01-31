@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const { COMPANY } = require('../constants/roles');
+import { COMPANY } from '../constants/roles.js';
 
-const CompanySchema = mongoose.Schema({
+const CompanySchema = Schema({
   firstName: {
     type: String,
     required: true,
@@ -17,6 +17,7 @@ const CompanySchema = mongoose.Schema({
   },
   companyEmail: {
     type: String,
+    unique: true,
     default: '',
   },
   companyPhone: {
@@ -34,11 +35,7 @@ const CompanySchema = mongoose.Schema({
   role: {
     type: String,
     default: COMPANY,
-  },
-  createdAt: {
-    type: Date,
-    default: Date,
-  },
+  }
 });
 
-module.exports = mongoose.model('Companies', CompanySchema);
+export default model('Companies', CompanySchema);

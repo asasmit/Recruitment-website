@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const JobSchema = mongoose.Schema({
+const JobSchema = Schema({
   _companyId: {
     type: String,
     required: true,
@@ -16,11 +16,7 @@ const JobSchema = mongoose.Schema({
   applicants: {
     type: Array,
     default: [],
-  },
-  createdAt: {
-    type: Date,
-    default: Date,
-  },
+  }
 });
 
-module.exports = mongoose.model('Jobs', JobSchema);
+export default model('Jobs', JobSchema);
