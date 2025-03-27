@@ -9,23 +9,18 @@ import companiesRouter from './routes/api/companies.js';
 import studentsRouter from './routes/api/students.js';
 import jobsRouter from './routes/api/jobs.js';
 import profileRouter from './routes/api/profile.js';
-
 import uploadRes from './routes/api/uploadRoute.js';
-import videoCall from './routes/api/videocall.js'
-import PeerServer from 'peerjs'
 
-const urii = process.env.MONGO_DB_URI;
-
-connect('mongodb+srv://asasmit:TCdAHMuZLb7rekD0@cluster0.pjcjr.mongodb.net/')
+connect('mongodb+srv://asasmit:2AeBB7VO5dc9iXTV@cluster0.pjcjr.mongodb.net/')
   .then(() => console.log('Connected to DB!'))
   .catch(error => console.log(error));
 
 const app = express();
  
 app.use(cors({
-  origin: 'http://localhost:3000', // The URL of your frontend
-  methods: 'GET,POST,PUT,DELETE,PATCH',  // Allowed HTTP methods
-  credentials: true,               // Allow credentials (cookies, authorization headers)
+  origin: 'http://localhost:3000',
+  methods: 'GET,POST,PUT,DELETE,PATCH',  
+  credentials: true,         
 }));
 
 app.use(session({
@@ -34,20 +29,9 @@ app.use(session({
   saveUninitialized: true,
 }));
 
-const peerServer = PeerServer({
-  port: 9000,
-  path: '/peerjs', // The same path as in the frontend
-  allow_discovery: true,
-  ssl: {
-    key: fs.readFileSync(path.join(__dirname, 'path_to_your_private_key.pem')),
-    cert: fs.readFileSync(path.join(__dirname, 'path_to_your_certificate.pem')),
-  },
-  // Additional config as needed
-});
 
-// Route for creating a new Peer (client-side PeerJS connection)
 app.get('/api/peer/create', (req, res) => {
-  const peer = new Peer({
+  const peer = new peer({
     host: 'localhost',
     port: 9000,
     path: '/peerjs', // Matches the path for PeerJS server

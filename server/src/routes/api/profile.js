@@ -91,8 +91,6 @@ router.patch('/', authorization, (req, res) => {
         .catch(error => res.status(400).send({ message: error.message }));
     }
   } catch (error) {
-    // Handle validation error
-    console.log("gg");
     return res.status(400).send({ message: error.message });
   }
 });
