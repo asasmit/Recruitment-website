@@ -138,6 +138,43 @@ git push origin feature-name
 
 ---
 
+# 📊 Newman Test Report
+
+This is the generated test report for the project APIs using **Newman**.
+
+---
+
+## 📝 **Collection Overview**
+
+- **Collection Name:** My-collection
+- **Description:** This is a collection to tell my project APIs.
+- **Time of Execution:** Fri Mar 28 2025 05:16:01 GMT+0530 (India Standard Time)
+- **Exported with:** Newman v6.2.1
+
+---
+
+## 📈 **Summary**
+
+| Metric              | Value |
+|---------------------|-------|
+| Iterations          | 1     |
+| Requests            | 8     |
+| Prerequest Scripts  | 9     |
+| Test Scripts        | 16    |
+| Assertions          | 32    |
+
+---
+
+## ✅ **Test Results**
+
+- **Total Tests Passed:** 32/32
+- **Total Tests Failed:** 0/32
+- **Total Run Duration:** 1465ms
+- **Total Data Received:** 1.25KB (approx)
+- **Average Response Time:** 91ms
+
+---
+
 ## 📧 **Contact**
 For any queries, please contact:
 
